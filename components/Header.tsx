@@ -11,7 +11,6 @@ const links = [
   { label: "Games", href: "#games" },
   { label: "About", href: "#about" },
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Support", href: "#support" },
 ];
 
 export default function Header() {

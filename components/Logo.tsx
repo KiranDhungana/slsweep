@@ -1,15 +1,21 @@
-import { Sparkle } from "lucide-react";
+import Image from "next/image";
+import logo from "@/assets/logo.png";
 
-export default function Logo({ light = false }: { light?: boolean }) {
+type Props = {
+  /** Kept for call-site compatibility; logo art is self-colored. */
+  light?: boolean;
+  className?: string;
+};
+
+export default function Logo({ className = "" }: Props) {
   return (
-    <span
-      className={`inline-flex items-center text-2xl font-black italic tracking-tight sm:text-3xl ${
-        light ? "text-white" : "text-brand-900"
-      }`}
-    >
-      SL
-      <Sparkle className="mx-0.5 h-5 w-5 fill-accent text-accent sm:h-6 sm:w-6" strokeWidth={0} />
-      SWEEP
-    </span>
+    <Image
+      src={logo}
+      alt="SL Sweep"
+      width={160}
+      height={160}
+      priority
+      className={`h-14 w-14 rounded-xl sm:h-16 sm:w-16 ${className}`}
+    />
   );
 }
