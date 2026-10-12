@@ -34,6 +34,15 @@ export const games: Game[] = [
     href: playUrl,
   },
   {
+    slug: "juwa-2",
+    name: "Juwa 2.0",
+    title: ["Juwa", "2.0"],
+    bg: "from-red-950 via-orange-700 to-yellow-500",
+    text: "from-yellow-100 via-amber-300 to-orange-400",
+    image: "/games/juwa-2.png",
+    href: playUrl,
+  },
+  {
     slug: "orion-stars",
     name: "Orion Stars",
     title: ["Orion", "Stars"],

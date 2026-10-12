@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import LiveWinners from "@/components/LiveWinners";
 import GamePlatforms from "@/components/GamePlatforms";
 import DashboardSection from "@/components/DashboardSection";
 import CTASection from "@/components/CTASection";
@@ -11,6 +12,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <LiveWinners />
         <GamePlatforms />
         <DashboardSection />
         <CTASection />
