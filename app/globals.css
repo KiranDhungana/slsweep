@@ -5,13 +5,24 @@
 html { scroll-behavior: smooth; }
 body { @apply bg-white text-ink antialiased; }
 
+a,
+button,
+[role="button"],
+summary,
+label[for],
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
 @layer components {
   .eyebrow { @apply text-xs font-bold uppercase tracking-[0.2em] text-brand-600; }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-brand-700 px-6 py-3 font-semibold text-white transition hover:bg-brand-800;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-brand-700 px-6 py-3 font-semibold text-white transition hover:bg-brand-800;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border-2 border-brand-700 bg-white px-6 py-3 font-semibold text-brand-700 transition hover:bg-brand-50;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-brand-700 bg-white px-6 py-3 font-semibold text-brand-700 transition hover:bg-brand-50;
   }
   .game-title {
     @apply font-black uppercase italic leading-none tracking-tight text-white;
