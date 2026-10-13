@@ -17,8 +17,14 @@ const titleSize = {
 export default function GameArt({ game, size = "lg", className = "" }: Props) {
   if (game.image) {
     return (
-      <div className={`relative overflow-hidden ${className}`}>
-        <Image src={game.image} alt={game.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+      <div className={`relative overflow-hidden bg-slate-950 ${className}`}>
+        <Image
+          src={game.image}
+          alt={game.name}
+          fill
+          className="object-contain object-center"
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
       </div>
     );
   }

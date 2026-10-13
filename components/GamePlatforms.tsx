@@ -29,7 +29,7 @@ export default function GamePlatforms() {
               key={g.slug}
               className="group overflow-hidden rounded-xl border border-slate-100 bg-white shadow-card transition hover:-translate-y-1"
             >
-              <GameArt game={g} size="lg" className="h-36 sm:h-40" />
+              <GameArt game={g} size="lg" className="aspect-square" />
               <div className="flex items-center justify-between px-4 py-3">
                 <div>
                   <h3 className="font-bold text-ink">{g.name}</h3>
