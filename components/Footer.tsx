@@ -1,11 +1,48 @@
 import Link from "next/link";
+import { games, gamePath } from "@/lib/games";
+import { socialUrls } from "@/lib/site";
 import Logo from "./Logo";
 
-const links = ["Home", "Games", "About", "How It Works", "Support"];
+const columns = [
+  {
+    title: "Games",
+    links: [
+      { label: "All Games", href: "/games/" },
+      ...games.map((g) => ({ label: g.name, href: gamePath(g.slug) })),
+    ],
+  },
+  {
+    title: "SL Sweep",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "How It Works", href: "/how-it-works/" },
+      { label: "About", href: "/about/" },
+      { label: "Blog", href: "/blog/" },
+      { label: "Apps", href: "/apps/" },
+      { label: "Sites", href: "/sites/" },
+    ],
+  },
+  {
+    title: "Help & Legal",
+    links: [
+      { label: "Support", href: "/support/" },
+      { label: "Terms", href: "/terms/" },
+      { label: "Privacy", href: "/privacy/" },
+      { label: "Sweepstakes Rules", href: "/sweepstakes-rules/" },
+      { label: "Responsible Play", href: "/responsible-play/" },
+    ],
+  },
+];
 
-function SocialIcon({ label, path }: { label: string; path: string }) {
+function SocialIcon({ label, path, href }: { label: string; path: string; href: string }) {
   return (
-    <a href="#" aria-label={label} className="text-white/80 transition hover:text-brand-300">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer me"
+      aria-label={label}
+      className="grid h-12 w-12 place-items-center text-white/80 transition hover:text-brand-300"
+    >
       <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
         <path d={path} />
       </svg>
@@ -21,25 +58,56 @@ const socials = [
 ];
 
 export default function Footer() {
+  const activeSocials = socials
+    .map((s) => ({ ...s, href: socialUrls[s.label as keyof typeof socialUrls] }))
+    .filter((s) => s.href);
+
   return (
-    <footer id="support" className="bg-brand-950 text-white">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-8 sm:px-8 lg:flex-row lg:justify-between">
-        <div className="flex flex-col items-center gap-6 lg:flex-row lg:gap-10">
-          <Logo light />
-          <nav className="flex flex-wrap justify-center gap-6 text-sm text-white/80">
-            {links.map((l) => (
-              <Link key={l} href="#" className="hover:text-white">
-                {l}
-              </Link>
+    <footer className="bg-brand-950 text-white">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
+        <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
+          <div>
+            <Link href="/" aria-label="SL Sweep home" className="inline-block">
+              <Logo light />
+            </Link>
+            <p className="mt-4 max-w-xs text-sm text-white/70">
+              The automated gaming platform for sweepstakes games online.
+            </p>
+            {activeSocials.length > 0 && (
+              <div className="mt-4 flex items-center gap-1">
+                {activeSocials.map((s) => (
+                  <SocialIcon key={s.label} {...s} />
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            {columns.map((col) => (
+              <nav key={col.title} aria-label={col.title}>
+                <p className="text-sm font-bold uppercase tracking-wider text-brand-300">{col.title}</p>
+                <ul className="mt-2">
+                  {col.links.map((l) => (
+                    <li key={l.href}>
+                      <Link
+                        href={l.href}
+                        className="inline-flex min-h-[48px] items-center text-sm text-white/80 hover:text-white md:min-h-[36px]"
+                      >
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             ))}
-          </nav>
+          </div>
         </div>
-        <div className="flex items-center gap-5">
-          {socials.map((s) => (
-            <SocialIcon key={s.label} {...s} />
-          ))}
-          <p className="ml-2 text-xs text-white/70">© {new Date().getFullYear()} SL Sweep. All rights reserved.</p>
-        </div>
+        <p className="mt-10 border-t border-white/10 pt-6 text-xs text-white/60">
+          © {new Date().getFullYear()} SL Sweep. Sweepstakes games are for entertainment. Please{" "}
+          <Link href="/responsible-play/" className="underline hover:text-white">
+            play responsibly
+          </Link>
+          .
+        </p>
       </div>
     </footer>
   );

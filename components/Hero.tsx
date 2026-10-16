@@ -20,6 +20,7 @@ export default function Hero() {
         alt=""
         fill
         priority
+        placeholder="blur"
         className="object-cover object-center"
         sizes="100vw"
         aria-hidden
@@ -28,12 +29,16 @@ export default function Hero() {
         <div className="lg:py-20">
           <p className="eyebrow">Welcome to SL Sweep</p>
           <h1 className="mt-4 text-5xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-6xl">
-            All your games.
-            <br />
-            <span className="text-brand-700">One place.</span>
+            SL Sweep –{" "}
+            <span className="text-brand-700">Play Sweepstakes Games Online</span>
           </h1>
-          <p className="mt-6 max-w-md text-lg text-slate-700">
-            Manage your account, access your favorite games and stay in control with one player dashboard.
+          <p className="mt-5 max-w-lg text-xl font-semibold text-slate-800">
+            The automated gaming platform for Orion Stars, GameVault, Juwa &amp; more
+          </p>
+          <p className="mt-4 max-w-lg text-lg text-slate-700">
+            SL Sweep is the easiest way to play sweepstakes games online from one player dashboard. Add
+            funds, open your favorite platforms and request cash-outs without juggling a separate account
+            for every game.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -45,7 +50,7 @@ export default function Hero() {
             >
               Get Started <ArrowUpRight className="h-4 w-4" />
             </a>
-            <Link href="#games" className="btn-outline min-w-[160px] bg-white/70 backdrop-blur-sm">
+            <Link href="/games/" className="btn-outline min-w-[160px] bg-white/70 backdrop-blur-sm">
               Explore Games
             </Link>
           </div>

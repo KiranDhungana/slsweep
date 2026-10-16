@@ -5,6 +5,10 @@ type Props = {
   game: Game;
   size?: "sm" | "md" | "lg";
   className?: string;
+  /** Descriptive alt text; defaults to "{name} game logo". */
+  alt?: string;
+  /** Set for above-the-fold art so it is preloaded instead of lazy-loaded. */
+  priority?: boolean;
 };
 
 const titleSize = {
@@ -14,15 +18,16 @@ const titleSize = {
 };
 
 /** Generated tile artwork. Drop a real image into /public/games and set `image` to use it instead. */
-export default function GameArt({ game, size = "lg", className = "" }: Props) {
+export default function GameArt({ game, size = "lg", className = "", alt, priority }: Props) {
   if (game.image) {
     return (
       <div className={`relative overflow-hidden bg-slate-950 ${className}`}>
         <Image
           src={game.image}
-          alt={game.name}
+          alt={alt || `${game.name} game logo`}
           fill
-          className="object-contain object-center"
+          priority={priority}
+          className="object-cover object-center"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
       </div>

@@ -9,7 +9,7 @@ const perks = [
 
 export default function CTASection() {
   return (
-    <section id="how-it-works" className="bg-gradient-to-r from-brand-50/70 via-white to-brand-50/70 py-14">
+    <section id="get-started" className="bg-gradient-to-r from-brand-50/70 via-white to-brand-50/70 py-14">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-8 lg:grid-cols-2">
         <div>
           <p className="eyebrow">Get Started Today</p>

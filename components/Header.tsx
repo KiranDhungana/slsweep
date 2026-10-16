@@ -7,10 +7,10 @@ import { playUrl } from "@/lib/site";
 import Logo from "./Logo";
 
 const links = [
-  { label: "Home", href: "#", active: true },
-  { label: "Games", href: "#games" },
-  { label: "About", href: "#about" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Home", href: "/" },
+  { label: "Games", href: "/games/" },
+  { label: "Blog", href: "/blog/" },
+  { label: "About", href: "/about/" },
 ];
 
 export default function Header() {
@@ -28,11 +28,7 @@ export default function Header() {
             <Link
               key={l.label}
               href={l.href}
-              className={`relative py-6 text-sm font-medium transition hover:text-brand-700 ${
-                l.active
-                  ? "text-ink after:absolute after:bottom-4 after:left-0 after:h-0.5 after:w-full after:bg-brand-700"
-                  : "text-slate-600"
-              }`}
+              className="relative py-6 text-sm font-medium text-slate-600 transition hover:text-brand-700"
             >
               {l.label}
             </Link>
@@ -49,7 +45,7 @@ export default function Header() {
         </a>
 
         <button
-          className="rounded p-2 text-brand-900 md:hidden"
+          className="grid h-12 w-12 place-items-center rounded text-brand-900 md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
           aria-expanded={open}
@@ -65,9 +61,7 @@ export default function Header() {
               key={l.label}
               href={l.href}
               onClick={() => setOpen(false)}
-              className={`rounded px-3 py-2 text-sm font-medium ${
-                l.active ? "bg-brand-50 text-brand-800" : "text-slate-700"
-              }`}
+              className="flex min-h-[48px] items-center rounded px-3 text-base font-medium text-slate-700"
             >
               {l.label}
             </Link>
@@ -76,7 +70,7 @@ export default function Header() {
             href={playUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary mt-2 text-sm"
+            className="btn-primary mt-2 min-h-[48px] text-sm"
           >
             Play Now <ArrowUpRight className="h-4 w-4" />
           </a>

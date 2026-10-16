@@ -1,6 +1,7 @@
 import { playUrl } from "./site";
 
 export type Game = {
+  /** URL slug: the game page lives at /games/{slug}/ */
   slug: string;
   name: string;
   /** Two-line title as shown on the tile art */
@@ -52,8 +53,8 @@ export const games: Game[] = [
     href: playUrl,
   },
   {
-    slug: "firekirin",
-    name: "FireKirin",
+    slug: "fire-kirin",
+    name: "Fire Kirin",
     title: ["Fire", "Kirin"],
     bg: "from-red-950 via-red-700 to-orange-500",
     text: "from-yellow-100 via-orange-300 to-red-500",
@@ -61,8 +62,8 @@ export const games: Game[] = [
     href: playUrl,
   },
   {
-    slug: "cashfrenzy",
-    name: "CashFrenzy",
+    slug: "cash-frenzy",
+    name: "Cash Frenzy",
     title: ["Cash", "Frenzy"],
     bg: "from-emerald-950 via-green-600 to-lime-400",
     text: "from-yellow-100 via-yellow-300 to-lime-400",
@@ -79,7 +80,7 @@ export const games: Game[] = [
     href: playUrl,
   },
   {
-    slug: "lasvegas-sweeps",
+    slug: "vegas-sweeps",
     name: "Vegas Sweeps",
     title: ["Vegas", "Sweeps"],
     bg: "from-indigo-950 via-purple-800 to-pink-600",
@@ -88,3 +89,11 @@ export const games: Game[] = [
     href: playUrl,
   },
 ];
+
+export function getGame(slug: string) {
+  return games.find((g) => g.slug === slug);
+}
+
+export function gamePath(slug: string) {
+  return `/games/${slug}/`;
+}
