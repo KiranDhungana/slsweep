@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "https://api.slsweepofficial.com";
 
 /**
  * Public blog data is cached (ISR) so pages are served as fast static HTML,
