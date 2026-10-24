@@ -1,8 +1,10 @@
 import Script from "next/script";
 
-/** Google Analytics 4. Renders nothing unless GA_MEASUREMENT_ID is set. */
+const GA_ID = process.env.GA_MEASUREMENT_ID || "G-XH0EGD5PMT";
+
+/** Google Analytics 4. Loaded on every page. */
 export default function Analytics() {
-  const id = process.env.GA_MEASUREMENT_ID;
+  const id = GA_ID;
   if (!id || !/^G-[A-Z0-9]+$/i.test(id)) return null;
 
   return (
