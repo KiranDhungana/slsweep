@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import RichTextEditor from "./RichTextEditor";
 import SeoPanel from "./SeoPanel";
 import {
+  BLOG_SITES,
   createPost,
   updatePost,
   type BlogPost,
+  type BlogSite,
   type PostStatus,
 } from "@/lib/api";
 
@@ -30,6 +32,7 @@ export default function BlogEditorForm({ initial }: Props) {
   const [error, setError] = useState("");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
+  const [site, setSite] = useState<BlogSite>(initial?.site || "SLSWEEP");
   const [title, setTitle] = useState(initial?.title || "");
   const [slug, setSlug] = useState(initial?.slug || "");
   const [excerpt, setExcerpt] = useState(initial?.excerpt || "");
@@ -52,6 +55,8 @@ export default function BlogEditorForm({ initial }: Props) {
   const [allowIndexing, setAllowIndexing] = useState(
     initial?.allowIndexing ?? true
   );
+
+  const siteMeta = BLOG_SITES.find((item) => item.id === site) || BLOG_SITES[0];
 
   const canSave = useMemo(
     () => title.trim().length > 0 && contentHtml.replace(/<[^>]+>/g, "").trim().length > 0,
@@ -76,13 +81,14 @@ export default function BlogEditorForm({ initial }: Props) {
     setError("");
     const payload = {
       title: title.trim(),
+      site,
       slug: slug.trim() || undefined,
       excerpt: excerpt.trim() || undefined,
       contentHtml,
       contentJson: contentJson || undefined,
       featuredImage: featuredImage.trim() || undefined,
       featuredImageAlt: featuredImageAlt.trim() || undefined,
-      authorName: authorName.trim() || "SL Sweep",
+      authorName: authorName.trim() || siteMeta.author,
       category: category.trim() || undefined,
       tags,
       status: nextStatus || status,
@@ -156,7 +162,7 @@ export default function BlogEditorForm({ initial }: Props) {
               const next = e.target.value;
               setTitle(next);
               if (!slugTouched) setSlug(slugify(next));
-              if (!metaTitle) setMetaTitle(next ? `${next} | SL Sweep` : "");
+              if (!metaTitle) setMetaTitle(next ? `${next} | ${siteMeta.brand}` : "");
             }}
             placeholder="Article title"
             className="w-full rounded-lg border border-slate-200 px-4 py-3 text-2xl font-bold outline-none focus:border-brand-500"
@@ -203,6 +209,38 @@ export default function BlogEditorForm({ initial }: Props) {
             <h2 className="text-sm font-bold uppercase tracking-wide text-slate-700">
               Publish
             </h2>
+            <label className="block space-y-1 text-sm">
+              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Site
+              </span>
+              <select
+                value={site}
+                onChange={(e) => {
+                  const next = e.target.value as BlogSite;
+                  const prev = BLOG_SITES.find((item) => item.id === site) || BLOG_SITES[0];
+                  const dest = BLOG_SITES.find((item) => item.id === next) || BLOG_SITES[0];
+                  setSite(next);
+                  setAuthorName((name) => (name === prev.author ? dest.author : name));
+                  setMetaTitle((current) => {
+                    const auto = title ? `${title} | ${prev.brand}` : "";
+                    if (!current || current === auto) {
+                      return title ? `${title} | ${dest.brand}` : "";
+                    }
+                    return current;
+                  });
+                }}
+                className="w-full rounded-md border border-slate-200 px-3 py-2 outline-none focus:border-brand-500"
+              >
+                {BLOG_SITES.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+              <span className="block text-xs text-slate-500">
+                Published articles show on {siteMeta.host}.
+              </span>
+            </label>
             <label className="block space-y-1 text-sm">
               <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Status
@@ -299,6 +337,7 @@ export default function BlogEditorForm({ initial }: Props) {
           <SeoPanel
             title={title}
             slug={slug}
+            host={siteMeta.host}
             metaTitle={metaTitle}
             metaDescription={metaDescription}
             focusKeyword={focusKeyword}

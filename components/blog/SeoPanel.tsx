@@ -3,6 +3,7 @@
 type Props = {
   title: string;
   slug: string;
+  host?: string;
   metaTitle: string;
   metaDescription: string;
   focusKeyword: string;
@@ -51,6 +52,7 @@ function scoreSeo({
 
 export default function SeoPanel(props: Props) {
   const { score, label, color, tips } = scoreSeo(props);
+  const host = props.host || "slsweepofficial.com";
 
   return (
     <aside className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -65,7 +67,7 @@ export default function SeoPanel(props: Props) {
 
       <div className="rounded-md border border-slate-100 bg-slate-50 p-3">
         <p className="truncate text-sm text-brand-700">
-          slsweepofficial.com/blog/{props.slug || "your-slug"}/
+          {host}/blog/{props.slug || "your-slug"}/
         </p>
         <p className="mt-1 line-clamp-1 text-base font-semibold text-blue-800">
           {props.metaTitle || props.title || "Meta title preview"}
@@ -120,7 +122,7 @@ export default function SeoPanel(props: Props) {
           value={props.canonicalUrl}
           onChange={(e) => props.onChange("canonicalUrl", e.target.value)}
           className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500"
-          placeholder="https://slsweepofficial.com/blog/.../"
+          placeholder={`https://${host}/blog/.../`}
         />
       </label>
 

@@ -11,8 +11,34 @@ const publicCache = { next: { revalidate: 300, tags: [BLOG_CACHE_TAG] } };
 
 export type PostStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
+export type BlogSite = "SLSWEEP" | "JUWADAY_VIP";
+
+export const BLOG_SITES: {
+  id: BlogSite;
+  label: string;
+  author: string;
+  brand: string;
+  host: string;
+}[] = [
+  {
+    id: "SLSWEEP",
+    label: "SL Sweep",
+    author: "SL Sweep",
+    brand: "SL Sweep",
+    host: "slsweepofficial.com",
+  },
+  {
+    id: "JUWADAY_VIP",
+    label: "Juwaday VIP",
+    author: "Juwaday VIP",
+    brand: "Juwadayvip.com",
+    host: "juwadayvip.com",
+  },
+];
+
 export type BlogPost = {
   id: string;
+  site: BlogSite;
   title: string;
   slug: string;
   excerpt: string | null;
@@ -48,6 +74,7 @@ export type BlogListResponse = {
 
 export type BlogInput = {
   title: string;
+  site?: BlogSite;
   slug?: string;
   excerpt?: string;
   contentHtml: string;
@@ -105,8 +132,10 @@ export async function fetchPublishedPosts(params?: {
   category?: string;
   tag?: string;
   q?: string;
+  site?: BlogSite;
 }): Promise<BlogListResponse> {
   const qs = new URLSearchParams();
+  qs.set("site", params?.site || "SLSWEEP");
   if (params?.page) qs.set("page", String(params.page));
   if (params?.limit) qs.set("limit", String(params.limit));
   if (params?.category) qs.set("category", params.category);
@@ -135,7 +164,7 @@ export type PostLookup =
 /** Looks up a post; `movedTo` is set when the slug was renamed (for a 301). */
 export async function fetchPublishedPost(slug: string): Promise<PostLookup> {
   const res = await fetch(
-    `${API_BASE}/api/blogs/slug/${encodeURIComponent(slug)}`,
+    `${API_BASE}/api/blogs/slug/${encodeURIComponent(slug)}?site=SLSWEEP`,
     publicCache
   );
   if (res.status === 404) {
@@ -151,7 +180,7 @@ export async function fetchTaxonomy(): Promise<{
   categories: TaxonomyTerm[];
   tags: TaxonomyTerm[];
 }> {
-  const res = await fetch(`${API_BASE}/api/blogs/taxonomy`, publicCache);
+  const res = await fetch(`${API_BASE}/api/blogs/taxonomy?site=SLSWEEP`, publicCache);
   return parseJson(res);
 }
 
@@ -159,11 +188,13 @@ export async function fetchAdminPosts(params?: {
   page?: number;
   status?: string;
   q?: string;
+  site?: BlogSite | "";
 }): Promise<BlogListResponse> {
   const qs = new URLSearchParams();
   if (params?.page) qs.set("page", String(params.page));
   if (params?.status) qs.set("status", params.status);
   if (params?.q) qs.set("q", params.q);
+  if (params?.site) qs.set("site", params.site);
 
   const res = await fetch(`${API_BASE}/api/blogs/admin?${qs}`, {
     headers: adminHeaders(),

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, RefreshCw, Trash2, ExternalLink } from "lucide-react";
-import { deletePost, fetchAdminPosts, type BlogPost } from "@/lib/api";
+import { BLOG_SITES, deletePost, fetchAdminPosts, type BlogPost, type BlogSite } from "@/lib/api";
 
 export default function AdminBlogListPage() {
   const [items, setItems] = useState<BlogPost[]>([]);
@@ -11,6 +11,7 @@ export default function AdminBlogListPage() {
   const [error, setError] = useState("");
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("");
+  const [site, setSite] = useState<"" | BlogSite>("");
 
   const load = async () => {
     setLoading(true);
@@ -19,6 +20,7 @@ export default function AdminBlogListPage() {
       const data = await fetchAdminPosts({
         q: q || undefined,
         status: status || undefined,
+        site: site || undefined,
       });
       setItems(data.items);
     } catch (err) {
@@ -71,6 +73,23 @@ export default function AdminBlogListPage() {
         </label>
         <label className="space-y-1 text-sm">
           <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Site
+          </span>
+          <select
+            value={site}
+            onChange={(e) => setSite(e.target.value as "" | BlogSite)}
+            className="rounded-md border border-slate-200 px-3 py-2 outline-none focus:border-brand-500"
+          >
+            <option value="">All sites</option>
+            {BLOG_SITES.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="space-y-1 text-sm">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Status
           </span>
           <select
@@ -105,6 +124,7 @@ export default function AdminBlogListPage() {
           <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3 font-semibold">Title</th>
+              <th className="px-4 py-3 font-semibold">Site</th>
               <th className="px-4 py-3 font-semibold">Status</th>
               <th className="px-4 py-3 font-semibold">Updated</th>
               <th className="px-4 py-3 font-semibold text-right">Actions</th>
@@ -113,7 +133,7 @@ export default function AdminBlogListPage() {
           <tbody>
             {items.length === 0 && !loading ? (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-slate-500">
+                <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
                   No articles yet.{" "}
                   <Link href="/admin/blog/new" className="font-semibold text-brand-700">
                     Add your first article
@@ -131,6 +151,9 @@ export default function AdminBlogListPage() {
                       {post.title}
                     </Link>
                     <p className="text-xs text-slate-500">/blog/{post.slug}</p>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600">
+                    {BLOG_SITES.find((item) => item.id === post.site)?.label || "SL Sweep"}
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -157,14 +180,19 @@ export default function AdminBlogListPage() {
                         Edit
                       </Link>
                       {post.status === "PUBLISHED" && (
-                        <Link
-                          href={`/blog/${post.slug}/`}
+                        <a
+                          href={
+                            post.site === "JUWADAY_VIP"
+                              ? `https://juwadayvip.com/blog/${post.slug}`
+                              : `/blog/${post.slug}/`
+                          }
                           target="_blank"
+                          rel="noopener noreferrer"
                           className="rounded-md border border-slate-200 p-1.5 hover:bg-slate-50"
                           aria-label="View"
                         >
                           <ExternalLink className="h-4 w-4" />
-                        </Link>
+                        </a>
                       )}
                       <button
                         type="button"
